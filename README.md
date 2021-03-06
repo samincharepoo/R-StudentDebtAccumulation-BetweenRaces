@@ -2,6 +2,9 @@
 
 **Student Debt Accumulation Between Different Races and the Long Term Effects**
 
+![image](https://user-images.githubusercontent.com/63875334/110209989-7c747f80-7e5d-11eb-95d1-cf5193c3862b.png)
+
+
 
 Student debt affects more than 40 million Americans in 2021. The burden of that debt varies across gender, location, demographic, and very strongly, race. There is a growing library of research which points to the apparent inequality in student debts held by students of color. This statistical analysis will look deeper into the difference in dept accumulation between Black, Hispanic and White Students as well as dive into how this debt could possibly effect other long term financial factors such as home ownership and average income.
 
