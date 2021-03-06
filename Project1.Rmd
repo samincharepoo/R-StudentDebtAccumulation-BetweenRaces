@@ -1,0 +1,126 @@
+---
+title: "Student Debt Accumulation Between Different Races and the Long Term Effects"
+author: "Samin Charepoo"
+date: "Mini Project 1 -- March 1st 2021"
+output: 
+  html_document:
+    theme: flatly
+    toc: true
+    toc_float: true
+    code_download: true
+    code_folding: hide
+---
+
+```{r, warning = FALSE, message = FALSE}
+# Load any R Packages you may need
+library(tidyverse)
+library(mdsr)
+library(mosaic)
+library(ggplot2)
+```
+
+```{r, warning = FALSE, message = FALSE}
+
+student_debt <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-02-09/student_debt.csv')
+home_owner <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-02-09/home_owner.csv')
+race_wealth <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-02-09/race_wealth.csv')
+race_wealth_c<-na.omit(race_wealth)
+race_wealth_clea<-race_wealth_c[!(race_wealth_c$race=="Non-White"),]
+race_wealth_clea1<-race_wealth_clea[!(race_wealth_clea$year=="1963"),]
+race_wealth_clean<-race_wealth_clea1[!(race_wealth_clea1$type=="Median"),]
+```
+
+## Looking at the Difference In Student Debt Between Black, White and Hispanic Students
+
+Student debt affects more than 40 million Americans in 2021. The burden of that debt varies across gender, location, demographic, and very strongly, race. There is a growing library of research which points to the apparent inequality in student debts held by students of color. This statistical analysis will look deeper into the difference in dept accumulation between Black, Hispanic and White Students as well as dive into how this debt could possibly effect other long term financial factors such as home ownership and average income. 
+
+The data set used here is the *student_debt* data set from *TidyTuesday* on *GitHub* showing average student debt amount in US dollars between White, Black and Hispanic students from the years 1989-2016.
+
+```{r, warning = FALSE, message = FALSE}
+ggplot(data=student_debt, aes(x=race, y=loan_debt, color=year))+
+  geom_violin(fill="slateblue", alpha=0.4)+
+  geom_jitter(height = 0, width=0.1)+
+  labs(x="Race",y="Student Debt", title="Difference in Debt by Race", subtitle = 'Between the Years 1990-2016',caption = "Figure 1")
+```
+
+
+This violin graph above shows the uneven distribution between students who are Black, White and Hispanic in regard to their student debt. We see that on average, in the year 2015, Black students have the largest student debt with an average of around $14,000, followed by White students with an average of about $11,000, then lastly Hispanic students with the lowest amount of around $7,000,  about half the amount as Black students! The color aesthetic seen on the right side of the graph shows the variable *year* and creates different shades of blue for each year the data set shows so we can distinct what year the parts of the graph are accounting for. We can see that as time goes on, debt is significantly rising between all races, especially Black students. It is interesting to see that in the years from 1990-2000, although there was still a difference in student debt between the races, it wasn't until after the year 2000 that it became such a drastic inequality. A *geom_violin* object was used for figure one because there was one categorical variable and one numerical variable. It also  shows the density of where most of the debt lies, as well as the range of debt students.
+
+We see in figure 2 below, the difference in student debt between the Black and Hispanic Students and see the apparent difference in the highest owed debt verses the lowest owed debt. It is interesting to see that even though there is a big gap in the amount of debt owed, the trend is growth is somewhat similar. A *geom_point* object was used in figure 2 because there were two numerical variables and it clearly shows where the debt amount lies in each year. I also added the *geom_line* object to that visualization to make it clearer the trend and see a clear line of direction.
+
+We see that throughout the years, student debt has increased tremendously overall as well as disproportionately in regards to race. We can not infer the specific reason for this striking difference, but definitely makes you wonder what long term effects this may have on these students.
+
+```{r, warning = FALSE, message = FALSE}
+highLow<-student_debt[!(student_debt$race=="White"),]
+ggplot(data = highLow, mapping = aes(x = year, y = loan_debt, color = race)) + 
+  geom_point(size = 2) + 
+  geom_line(se = FALSE)+
+  labs(x="Year",y="Student Debt", title="Difference in Debt",subtitle = "Years 1989-2016 Between Black and Hispanic Students",caption = "Figure 2")
+
+```
+
+
+## Wealth and Home Ownership by Race
+
+
+Now that we have seen this apparent disproportion in student debt between Black, Hispanic and White Students, lets look at some of the long term effects that might have. The data we are looking at is from two data sets, *race_wealth* and *home_owner* from *TidyTuesday* on Github. The "race_wealth" shows the average family wealth by race (Black, White and Hispanic) and year (1983-2016). The "home_owner" data shows home ownership percentage for families by race (Black, White and Hispanic) and year (1976-2016)
+
+
+
+
+```{r, warning = FALSE, message = FALSE}
+
+p2<-ggplot(data=race_wealth_clean, aes(x=year, y=wealth_family, color=race))+
+  geom_boxplot()+
+  labs(x="Year",y="Average Wealth", title="Average Family Wealth by Race",caption = "Figure 3")
+p2
+
+```
+
+
+
+
+We see in figures 2 above that Black individuals have the lowest average family wealth, followed by Hispanic individuals, then White. Comparing figures 2 with figure 1 above, we see that although Hispanic students had the least amount of student debt, their average wealth is almost identical with Black individuals and there is a huge gap in wealth between Black and Hispanic individuals versus White individuals which is not surprising. Although we see a relationship between Black students debt being high and their wealth being low, that is not the case for Hispanic and White students, leading us to infer that there are many systemic factors outside of student debt that play into this inequality of wealth between races. One factor that comes to mind as well is even though White students have a fair amount of debt, certain systems have been put in place to allow them to succeed financially, making paying off student debt less burdensome long term because their net worth is far greater. A *geom_boxplot* object was used to compare all three races side-by-side and have an overview of the average family wealth between the races. The color aesthetic of *race* was used to simply categorize the different races. 
+
+We can see in figure 3 below the drastic difference between the the race with the highest average family wealth and the race with the lowest average family wealth. A *geom_point* and *geom_line* object were used to visualize the trend of wealth growth over time. We see that over this 33 year period the White race has been able to increase their wealth tremendously, while Black individuals stay around the same place in the entire time frame. The color aesthetic of *race* was used to categorize the two different races. We see more of the long term effects with the visualization below on home ownership between race.
+
+```{r, warning = FALSE, message = FALSE}
+HighestLowest<-race_wealth_clean[!(race_wealth_clean$race=="Hispanic"),]
+p1<-ggplot(data = HighestLowest, mapping = aes(x = year, y = wealth_family, color=race)) + 
+  geom_point(size = 2, aes(color= race, size=loan_debt)) +
+  geom_line() +
+  labs(x="Year",y="Average Wealth", title="Average Family Wealth", subtitle = "Years 1983-2016 Between Black and White Individuals", caption="Figure 4")
+p1
+```
+
+
+
+
+
+Looking at figure 5 below on home ownership, we see a big gap between Black and Hispanic versus White individuals. There are two dips throughout the years between all three races, but it seems to stay within the same range for each. Looking closely, the lowest the percent of White homers is always above 65%, while the highest percentage of Black and Hispanic homeowners never rises above 50%. This is a huge disparity! Just like with the *Wealth by Race* visualization above, we can not necessarily link the proportion of student debt with the percentage of home ownership by race, but it might still play a factor. If one has more debt, they are more likely to not be able to afford a down payment and mortgage on a home, but we see that white students, although second highest in student debt, are incredibly more likely to own a home which again shows us that there are many other systemic factors playing into this unequal distribution of home ownership percentage by race. A *geom_point* and *geom_smooth* object were used since it was two numeric variables and to show the trend of home ownership throughout the years to get a bigger picture of how the distribution falls. I used a *facet_wrap* to separate the three races to have a clear visual of the three as Black and Hispanic data was similar. The color aesthetic of *race* was used to categorize and color-code the different races. 
+
+
+
+```{r, echo = FALSE, warning = FALSE, message = FALSE}
+ggplot(data = home_owner, mapping = aes(x = year, y = home_owner_pct)) + 
+  geom_point(size = 2, aes(color= race, size=loan_debt)) +
+  geom_smooth() +
+  facet_wrap(~race)+
+  labs(x="Year",y="Home Owner Percentage", title="Home Ownership Percentage by Race", subtitle = "Years 1989-2016 Between Black, White and Hispanic Individuals",caption = "Figure 5")
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
