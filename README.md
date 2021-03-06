@@ -22,4 +22,7 @@ race_wealth_clea1<-race_wealth_clea[!(race_wealth_clea$year=="1963"),]
 race_wealth_clean<-race_wealth_clea1[!(race_wealth_clea1$type=="Median"),]
 
 HighestLowest<-race_wealth_clean[!(race_wealth_clean$race=="Hispanic"),]
+
 highLow<-student_debt[!(student_debt$race=="White"),]
+
+
